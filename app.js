@@ -1,24 +1,9 @@
-const http=require('http')
-const server=http.createServer((req,res)=>{
-    
-    const url=req.url;
-    const method=req.method;
+const http = require('http');
+const routes=require('./routes')
 
-    if(req.url==='/'){
-        //form
-        res.setHeader('Content-type','text/html');
-        res.end(
-            `
-            <form>
-                <label>Name:</label>
-                <input type="text" name="username"></input>
-                <button type="submit">Add</button>
-            </form>
-            `
-            
-        );
-    }
-})
-server.listen(3003, ()=>{
-    console.log("server is running")
-})
+routes.testFunction();
+const server = http.createServer(routes.handler);
+
+server.listen(3001, () => {
+  console.log("Server is running on http://localhost:3000");
+});
