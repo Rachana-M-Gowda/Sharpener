@@ -1,21 +1,36 @@
 const express = require('express');
 const app = express();
-
 const PORT = 4000;
 
-// Dynamic Route: /welcome/:username
-app.get('/welcome/:username', (req, res) => {
-  const username = req.params.username; // route parameter
-  const role = req.query.role; // query parameter
-
-  if (role) {
-    res.send(`Welcome ${username}, your role is ${role}`);
-  } else {
-    res.send(`Welcome ${username}`);
-  }
+// Logging Middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} request made to ${req.url}`);
+  next(); // Pass to the next middleware or route
 });
 
-// Start server
+// Routes
+
+// GET /products
+app.get('/products', (req, res) => {
+  res.send('Here is the list of all products.');
+});
+
+// POST /products
+app.post('/products', (req, res) => {
+  res.send('A new product has been added.');
+});
+
+// GET /categories
+app.get('/categories', (req, res) => {
+  res.send('Here is the list of all categories.');
+});
+
+// POST /categories
+app.post('/categories', (req, res) => {
+  res.send('A new category has been created.');
+});
+
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
