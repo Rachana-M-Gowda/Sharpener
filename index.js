@@ -2,15 +2,24 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-const bookRoutes = require('./routes/bookRoutes');
+// Routers
+const studentRoutes = require('./routes/studentRoutes');
+const courseRoutes = require('./routes/courseRoutes');
 
-// Middleware to parse JSON
-app.use(express.json());
+// Home route
+app.get('/', (req, res) => {
+  res.send("Welcome to the Student & Course Portal API!");
+});
 
-// Use the /books route
-app.use('/books', bookRoutes);
+// Mount routers
+app.use('/students', studentRoutes);
+app.use('/courses', courseRoutes);
 
-// Start the server
+// 404 Not Found Handler
+app.use((req, res) => {
+  res.status(404).send("Page not found");
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
