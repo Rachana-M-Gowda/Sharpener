@@ -4,14 +4,14 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-// GET endpoint to serve HTML file
+// Route to serve the HTML form
 app.get('/api/products', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'products.html'));
+  res.sendFile(path.join(__dirname, 'views', 'productForm.html'));
 });
 
 // Default route
 app.get('/', (req, res) => {
-  res.send('Welcome to the HTML API server!');
+  res.send('Welcome to the Product Form Server!');
 });
 
 // Start server
