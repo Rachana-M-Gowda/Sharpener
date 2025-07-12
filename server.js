@@ -1,24 +1,22 @@
-const http = require("http");
+// server.js
+const express = require('express');
+const app = express();
+const port = 3000;
 
-const server = http.createServer((req, res) => {
-  res.setHeader("Content-Type", "text/html");
+// Import route files
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
-  if (req.url === "/") {
-    res.end("<h1>Hello World</h1>");
-  } else if (req.url === "/pizza") {
-    res.end("<h1>This is your pizza</h1>");
-  } else if (req.url === "/home") {
-    res.end("<h1>Welcome home</h1>");
-  } else if (req.url === "/about") {
-    res.end("<h1>Welcome to About Us</h1>");
-  } else if (req.url === "/node") {
-    res.end("<h1>Welcome to my Node Js project</h1>");
-  } else {
-    res.statusCode = 404;
-    res.end("<h1>Page Not Found</h1>");
-  }
-});
+// Middleware
+app.use(express.json());
 
-server.listen(3001, () => {
-  console.log("Server is running on http://localhost:3000");
+// Use routes
+app.use('/users', userRoutes);
+app.use('/products', productRoutes);
+app.use('/cart', cartRoutes);
+
+// Start server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
