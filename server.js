@@ -1,28 +1,26 @@
-// server.js
-
 const express = require('express');
 const app = express();
 const port = 3000;
 
-// Import route files
-const userRoutes = require('./routes/userRoute');
-const productRoutes = require('./routes/productRoute');
-const cartRoutes = require('./routes/cartRoute');
+// Import routes
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
-// Middleware to parse JSON request bodies
+// Middleware
 app.use(express.json());
 
-// Use route files with /api prefix
+// Route registration
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
 // Default route
 app.get('/', (req, res) => {
-  res.send('Welcome to the E-Commerce API');
+  res.send('Welcome to the E-Commerce API!');
 });
 
-// Start the server
+// Start server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
