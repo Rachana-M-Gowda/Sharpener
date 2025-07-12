@@ -1,34 +1,16 @@
-// server.js
 const express = require('express');
-const path = require('path');
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-// Middleware to parse JSON and URL-encoded data
+const productRoutes = require('./routes/productRoutes');
+const errorHandler = require('./middleware/errorHandler');
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (e.g., axios)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api/products', productRoutes);
 
-// GET: Serve the HTML form
-app.get('/api/products', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'productForm.html'));
-});
+app.use(errorHandler); // Centralized error handler
 
-// POST: Handle form submission
-app.post('/api/products', (req, res) => {
-  const { productName } = req.body;
-  console.log('Received product:', productName);
-  res.send(`Product added: ${productName}`);
-});
-
-// Default route
-app.get('/', (req, res) => {
-  res.send('Welcome to the Product POST API!');
-});
-
-// Start server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
