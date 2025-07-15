@@ -1,0 +1,28 @@
+CREATE DATABASE BUSBOOKINGSYSTEM;
+USE BUSBOOKINGSYSTEM;
+-- Users Table
+CREATE TABLE Users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE Buses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    busNumber VARCHAR(100) UNIQUE NOT NULL,
+    totalSeats INT NOT NULL,
+    availableSeats INT NOT NULL
+);buses
+
+-- Bookings Table
+CREATE TABLE Bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    seatNumber INT NOT NULL
+);
+
+-- Payments Table
+CREATE TABLE Payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    amountPaid DECIMAL(10,2) NOT NULL,
+    paymentStatus VARCHAR(100) NOT NULL
+);
