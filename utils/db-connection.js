@@ -1,10 +1,11 @@
-const mysql=require('mysql2')
 
-const connection=mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'mysql@2025',
-    database:'testdb'
+const mysql = require('mysql2')
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'mysql@2025',
+  database: 'studentdb'
 })
 
 connection.connect((err)=>{
@@ -14,10 +15,11 @@ connection.connect((err)=>{
     }
     console.log('connection has been created');
 
-    const creationQuery=`create table IF NOT EXISTS Student(
+    const creationQuery=`CREATE TABLE IF NOT EXISTS STUDENTS (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20),
-    email VARCHAR(20)
+    name VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    age INT
 )`
     connection.execute(creationQuery,(err)=>{
         if(err){
@@ -30,3 +32,6 @@ connection.connect((err)=>{
 
 })
 module.exports=connection;
+
+
+
