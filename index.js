@@ -1,28 +1,16 @@
-const express=require('express')
-const db=require('./utils/db-connection');
-const studentRoutes=require('./routes/studentsRoutes');
-const app=express();
+const express = require('express');
+const { sequelize } = require('./models');
+const userRoutes = require('./routes/userRoutes');
+const busRoutes = require('./routes/busRoutes');
 
-
-//models
-const studentModel=require('./models/students')
-
+const app = express();
 app.use(express.json());
 
-app.get('/',(req,res)=>{
-    res.send('Hello world');
-})
+app.use('/users', userRoutes);
+app.use('/buses', busRoutes);
 
-app.use("/students",studentRoutes);
-
-db.sync({force:true}).then((err)=>{
-    app.listen(3000,(err)=>{
-        console.log("Server is running");
-    })
-}).catch((err)=>{
-    console.log(err);
-})
-
-app.listen(3000,(err)=>{
-    console.log("Server is running");
-})
+sequelize.sync().then(() => {
+  app.listen(3000, () => {
+    console.log('✅ Server is running at http://localhost:3000');
+  });
+});
