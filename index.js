@@ -1,22 +1,26 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const { sequelize } = require('./models');
-const userRoutes = require('./routes/userRoutes');
+const Student=require('./students');
+const IdentityCard=require('./identitycard');
+const department=require('./department');
+const courses=require('./courses');
+const studentCourses=require('./studentCourses');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+//one to one
+Student.hasOne(IdentityCard);
+IdentityCard.belongsTo(Student);
 
-app.use('/users', userRoutes);
 
-// Sync DB and Start Server
+//one to many
+department.hasMany(Student);
+Student.belongsTo(department);
 
-sequelize.sync({ force: true })  // DANGER: This drops and recreates all tables
-  .then(() => {
-    app.listen(3000, () => {
-      console.log("Server running at http://localhost:3000");
-    });
-  })
-  .catch(err => console.log(err));
+//many to many association
+studentCourses.belongsToMany(courses,{through:studentCourses});
+courses.belongsToMany(Student,{through:studentCourses});
+
+
+module.exports={
+    Student,
+    IdentityCard,
+    courses,
+    studentCourses
+}
