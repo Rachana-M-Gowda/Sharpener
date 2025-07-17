@@ -1,16 +1,26 @@
 const express = require('express');
 const app = express();
-const PORT = 3000;
-
-const productRoutes = require('./routes/productRoutes');
-const errorHandler = require('./middleware/errorHandler');
+const db = require('./models');
 
 app.use(express.json());
 
-app.use('/api/products', productRoutes);
+const userRoutes = require('./routes/userRoutes');
+const busRoutes = require('./routes/busRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+const paymentRoutes=require('./routes/paymentRoutes');
 
-app.use(errorHandler); // Centralized error handler
+app.use('/users', userRoutes);
+app.use('/buses', busRoutes);
+app.use('/bookings', bookingRoutes);
+app.use('/payment',paymentRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// Sync DB and start server
+db.sequelize.sync({ force: false }).then(() => {
+  console.log('Database synced');
+  app.listen(3000, () => console.log('Server running on port 3000'));
 });
+
+app.use((req, res) => {
+  res.status(404).send('Route not found');
+});
+
