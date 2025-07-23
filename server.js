@@ -1,26 +1,25 @@
 const express = require('express');
-const app = express();
-const db = require('./models');
+const path = require('path'); // <-- required to work with file paths
+const sequelize = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
 
+const app = express();
 app.use(express.json());
 
-const userRoutes = require('./routes/userRoutes');
-const busRoutes = require('./routes/busRoutes');
-const bookingRoutes = require('./routes/bookingRoutes');
-const paymentRoutes=require('./routes/paymentRoutes');
+// ✅ Serve frontend from 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/users', userRoutes);
-app.use('/buses', busRoutes);
-app.use('/bookings', bookingRoutes);
-app.use('/payment',paymentRoutes);
-
-// Sync DB and start server
-db.sequelize.sync({ force: false }).then(() => {
-  console.log('Database synced');
-  app.listen(3000, () => console.log('Server running on port 3000'));
+// ✅ Load signup.html when visiting root URL
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'signup.html'));
 });
 
-app.use((req, res) => {
-  res.status(404).send('Route not found');
-});
+// ✅ Auth API route
+app.use('/api/auth', authRoutes);
 
+// ✅ Start server after DB sync
+sequelize.sync().then(() => {
+  app.listen(3000, () => {
+    console.log('✅ Server running on http://localhost:3000');
+  });
+});
