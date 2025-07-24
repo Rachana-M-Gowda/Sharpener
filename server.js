@@ -1,25 +1,22 @@
 const express = require('express');
-const path = require('path'); // <-- required to work with file paths
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const sequelize = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const path = require('path');
 
 const app = express();
-app.use(express.json());
+const PORT = 3000;
 
-// ✅ Serve frontend from 'public' folder
+app.use(cors());
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ Load signup.html when visiting root URL
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'signup.html'));
-});
+// Routes
+app.use('/api', authRoutes);
 
-// ✅ Auth API route
-app.use('/api/auth', authRoutes);
-
-// ✅ Start server after DB sync
+// Start
 sequelize.sync().then(() => {
-  app.listen(3000, () => {
-    console.log('✅ Server running on http://localhost:3000');
-  });
+  console.log('DB synced');
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 });
