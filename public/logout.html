@@ -1,0 +1,16 @@
+<!-- public/logout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Logout</title>
+  <script>
+    // Clear token from localStorage/sessionStorage
+    localStorage.removeItem("token"); // or sessionStorage.clear()
+    alert("You have been logged out.");
+    window.location.href = "/"; // Redirect to signup or login page
+  </script>
+</head>
+<body>
+</body>
+</html>
